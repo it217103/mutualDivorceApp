@@ -7,7 +7,9 @@ import com.project.mutualDivorce.Service.DivorceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -78,5 +80,18 @@ public class DivorceController {
     @GetMapping("/simvolaiografikiPraksi")
     public String simvolaiografikiPraksi(){
         return "simvolaiografikiPraksi";
+    }
+
+    @PutMapping("/updateApproved")
+    public String updateApprovedById(@RequestParam("id") String id, Authentication authentication, Model model) {
+        // Check if the user is authenticated and has admin role
+        if (!authentication.isAuthenticated() || !authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+            model.addAttribute("message", "Access denied. Only admins can approve.");
+            return "errorPage"; // Create an error page to display the message.
+        }
+
+        divorceService.updateStatusById(Long.parseLong(id));
+
+        return "viewDivorceForm";
     }
 }

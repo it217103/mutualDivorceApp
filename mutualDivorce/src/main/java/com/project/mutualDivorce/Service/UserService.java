@@ -22,7 +22,6 @@ public interface UserService {
 
     void deleteById(long id);
 
-
     Optional<User> findByUsername(String username);
 
     User addUser(UserDto userDto);

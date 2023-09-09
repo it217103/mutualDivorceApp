@@ -52,12 +52,12 @@
             <th>Τραπεζικοί Λογαριασμοί</th>
             <th>Ιδιωτικά Οχήματα</th>
             <th>Λόγος χωρισμού</th>
-
-
+            <th>Κατάσταση διαζυγίου</th>
+            <th>Approved</th> <!-- Add this column header -->
         </tr>
         </thead>
         <tbody>
-        <tr th:each="divorceForm : ${divorceForms}">
+        <tr th:each="divorceForm, iterStat : ${divorceForms}">
             <td th:text="${divorceForm.id}"></td>
             <td th:text="${divorceForm.husbandAfm}"></td>
             <td th:text="${divorceForm.husbandAmka}"></td>
@@ -70,12 +70,18 @@
             <td th:text="${divorceForm.logariasmoiTrapezwn}"></td>
             <td th:text="${divorceForm.ix}"></td>
             <td th:text="${divorceForm.reason}"></td>
+            <td th:text="${divorceForm.approved}"></td>
+
+            <td>
+                <input type="checkbox" th:checked="${divorceForm.approved}" data-index="${iterStat.index}" class="approvalCheckbox"/>
+            </td>
         </tr>
         </tbody>
     </table>
 </div>
 <script th:src="@{/js/lib/jquery.min.js}"></script>
 <script th:src="@{/js/lib/datatable.min.js}"></script>
+<script th:src="@{/js/lib/update.min.js}"></script>
 <script>
     $(document).ready(function () {
         $('#divorces-table').DataTable();

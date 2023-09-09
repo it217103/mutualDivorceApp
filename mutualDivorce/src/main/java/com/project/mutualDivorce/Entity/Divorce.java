@@ -33,22 +33,14 @@ public class Divorce {
     @Column(name = "reason")
     private String reason;
 
-
-    @Column(name ="status")
-    private boolean status;
+    @Column(name ="approved")
+    private boolean approved;
 
 
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
 
     public String getHusbandAfm() {
         return husbandAfm;
@@ -152,5 +144,9 @@ public class Divorce {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public boolean isApproved() {
+        return approved;
     }
 }

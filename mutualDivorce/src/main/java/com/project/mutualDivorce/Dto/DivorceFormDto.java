@@ -37,7 +37,7 @@ public class DivorceFormDto  {
     private  String logariasmoiTrapezwn;
     private  String ix;
 
-    private boolean status;
+    private boolean approved;
 
     private  String reasonOfDivorce;
     private User user;

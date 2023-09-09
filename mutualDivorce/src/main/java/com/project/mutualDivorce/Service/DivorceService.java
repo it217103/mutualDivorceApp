@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DivorceService {
@@ -19,9 +18,7 @@ public class DivorceService {
         this.divorceRepository = divorceRepository;
     }
 
-    public Divorce editForm(long id, Divorce updatedForm) {
-        return null;
-    }
+
 
     public List<Divorce> findAll(){
         return divorceRepository.findAll();
@@ -34,6 +31,10 @@ public class DivorceService {
     }
     public void deleteById(long id){
         divorceRepository.deleteById(id);
+    }
+
+    public void updateStatusById(long id) {
+        divorceRepository.updateStatusById(id);
     }
 
     public Divorce createDivorceForm(DivorceFormDto divorceFormDto){
