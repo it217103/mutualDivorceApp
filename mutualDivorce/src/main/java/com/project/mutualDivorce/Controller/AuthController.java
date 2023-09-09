@@ -27,12 +27,6 @@ public class AuthController {
         this.userService = userService;
     }
 
-//    @GetMapping("/registeredUsers")
-//    public String registeredUsers(){
-//        return "registeredUsers";
-//
-//    }
-
 
     // handler method to handle home page request
     @GetMapping("/index")
@@ -96,19 +90,4 @@ public class AuthController {
         return "registeredUsers";
     }
 
-    /*
-    @GetMapping("/submit-divorce-form")
-    public String formSubmit(){
-        return "submit-divorce-form";
-    }
-
-   @GetMapping("/divorceForm")
-    public String divorceForm(){
-        return "divorceForm";
-   }
-    @GetMapping("/simvolaiografikiPraksi")
-    public String simvolaiografikiPraksi(){
-        return "simvolaiografikiPraksi";
-    }
-*/
 }
