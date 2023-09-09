@@ -56,6 +56,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Registered Users</title>
+  <link rel="stylesheet" th:href="@{/css/lib/datatable.min.css}">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -78,7 +79,10 @@
       background-color: #fff;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     }
-
+    .container{
+      width: 1142px;
+      margin: 0 auto;
+    }
     th, td {
       padding: 15px;
       text-align: left;
@@ -102,31 +106,36 @@
 </head>
 <body>
 <h1>Registered Users</h1>
-<table>
-  <thead>
-  <tr>
-    <th>ID</th>
-    <th>SURNAME</th>
-    <th>AFM</th>
-    <th>AMKA</th>
-    <th>ROLE</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="user : ${users}">
-    <td th:text="${user.id}"></td>
-    <td th:text="${user.surname}"></td>
-    <td th:text="${user.afm}"></td>
-    <td th:text="${user.amka}"></td>
-    <td th:text="${user.role}"></td>
+<div class="container">
+  <table id="registered-user-table">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>SURNAME</th>
+      <th>AFM</th>
+      <th>AMKA</th>
+      <th>ROLE</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+      <td th:text="${user.id}"></td>
+      <td th:text="${user.surname}"></td>
+      <td th:text="${user.afm}"></td>
+      <td th:text="${user.amka}"></td>
+      <td th:text="${(user.role=='ROLE_ADMIN')?'ADMIN':'USER'}"></td>
 
-    <td>
-      <button onclick="deleteUser(${user.id})">Delete</button>
-    </td>
-  </tr>
-  </tbody>
-</table>
+      <td>
+        <button th:onclick="|deleteUser('${user.id}')|">Delete</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
 <button onclick="window.location.href='/admin'">Go Back to Admin Page</button>
+<script th:src="@{/js/lib/jquery.min.js}"></script>
+<script th:src="@{/js/lib/datatable.min.js}"></script>
 <script>
   function deleteUser(userId) {
     console.log('deleteUser function called with userID:', userId);
@@ -140,8 +149,7 @@
               .then(response => {
                 if (response.ok) {
                   alert('User deleted successfully.');
-                  // Implement logic to remove the deleted row from the table.
-                  document.getElementById(`userRow_${userId}`).remove();
+                  window.location.reload();
                 } else {
                   alert('Failed to delete user.');
                 }
@@ -152,6 +160,10 @@
               });
     }
   }
+
+  $(document).ready(function () {
+    $('#registered-user-table').DataTable();
+  });
 </script>
 </body>
 </html>

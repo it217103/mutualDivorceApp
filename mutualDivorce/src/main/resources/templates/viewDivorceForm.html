@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,52 +11,75 @@
           rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/lib/datatable.min.css}">
+
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/admin.html">Admin Dashboard</a>
+        <div class="topnav">
+            <th:block sec:authorize="isAuthenticated()">
+                <a th:href="@{/logout}">Logout</a>
+                <a th:href="@{/divorceForm}" target="_self">Apply for Divorce</a>
+                <a th:href="@{/divorces/viewDivorceForm}" target="_self">View Divorces in DB</a>
+                <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a th:href="@{/registeredUsers}" target="_self">Registered Users</a>
+                    <a th:href="@{/admin}" target="_self">Administrator access</a>
+                </th:block>
+            </th:block>
+            <th:block sec:authorize="!isAuthenticated()">
+                <a th:href="@{/login}">Login</a>
+                <a th:href="@{/register}">Register</a>
+            </th:block>
+        </div>
     </div>
 </nav>
 
 <div class="container mt-4">
     <h1>View Divorce Forms</h1>
-    <table class="table table-bordered">
+    <table class="table table-bordered" id="divorces-table">
         <thead class="table-dark">
-    <tr>
-        <th>ID</th>
-        <th>ΑΦΜ Συζήγου Α</th>
-        <th>ΑΜΚΑ Συζήγου Α</th>
-        <th>Επίθετο Συζήγου Α</th>
-        <th>ΑΦΜ Συζήγου Β</th>
-        <th>ΑΜΚΑ Συζήγου Β</th>
-        <th>Επίθετο Συζήγου Β</th>
-        <th>Επιμέλεια παιδιών</th>
-        <th>Ιδιοκτησία Ακίνητης Περιουσίας</th>
-        <th>Τραπεζικοί Λογαριασμοί</th>
-        <th>Ιδιωτικά Οχήματα</th>
-        <th>Λόγος χωρισμού</th>
+        <tr>
+            <th>ID</th>
+            <th>ΑΦΜ Συζήγου Α</th>
+            <th>ΑΜΚΑ Συζήγου Α</th>
+            <th>Επίθετο Συζήγου Α</th>
+            <th>ΑΦΜ Συζήγου Β</th>
+            <th>ΑΜΚΑ Συζήγου Β</th>
+            <th>Επίθετο Συζήγου Β</th>
+            <th>Επιμέλεια παιδιών</th>
+            <th>Ιδιοκτησία Ακίνητης Περιουσίας</th>
+            <th>Τραπεζικοί Λογαριασμοί</th>
+            <th>Ιδιωτικά Οχήματα</th>
+            <th>Λόγος χωρισμού</th>
 
 
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="divorceForm : ${divorceForms}">
-        <td th:text="${divorceForm.id}"></td>
-        <td th:text="${divorceForm.husbandAfm}"></td>
-        <td th:text="${divorceForm.husbandAmka}"></td>
-        <td th:text="${divorceForm.husbandSurname}"></td>
-        <td th:text="${divorceForm.wifeAfm}"></td>
-        <td th:text="${divorceForm.wifeAmka}"></td>
-        <td th:text="${divorceForm.wifeSurname}"></td>
-        <td th:text="${divorceForm.epimeleiaPaidiwn}"></td>
-        <td th:text="${divorceForm.akinitiPeriousia}"></td>
-        <td th:text="${divorceForm.logariasmoiTrapezwn}"></td>
-        <td th:text="${divorceForm.ix}"></td>
-        <td th:text="${divorceForm.reason}"></td>
-    </tr>
-    </tbody>
-</table>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="divorceForm : ${divorceForms}">
+            <td th:text="${divorceForm.id}"></td>
+            <td th:text="${divorceForm.husbandAfm}"></td>
+            <td th:text="${divorceForm.husbandAmka}"></td>
+            <td th:text="${divorceForm.husbandSurname}"></td>
+            <td th:text="${divorceForm.wifeAfm}"></td>
+            <td th:text="${divorceForm.wifeAmka}"></td>
+            <td th:text="${divorceForm.wifeSurname}"></td>
+            <td th:text="${divorceForm.epimeleiaPaidiwn}"></td>
+            <td th:text="${divorceForm.akinitiPeriousia}"></td>
+            <td th:text="${divorceForm.logariasmoiTrapezwn}"></td>
+            <td th:text="${divorceForm.ix}"></td>
+            <td th:text="${divorceForm.reason}"></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
+<script th:src="@{/js/lib/jquery.min.js}"></script>
+<script th:src="@{/js/lib/datatable.min.js}"></script>
+<script>
+    $(document).ready(function () {
+        $('#divorces-table').DataTable();
+    });
+</script>
 </body>
 </html>

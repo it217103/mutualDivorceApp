@@ -16,12 +16,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            RoleRepository roleRepository,
@@ -36,29 +33,20 @@ public class UserServiceImpl implements UserService {
         user.setSurname(userDto.getSurname());
         user.setAfm(userDto.getAfm());
         user.setAmka(userDto.getAmka());
-        user.setPassword(userDto.getPassword());
-        user.setId(userDto.getId());
         user.setUsername(userDto.getSurname());
         // encrypt the password using spring security
 
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
-        Role roleAdmin = roleRepository.findByName("ROLE_ADMIN");
-        if (roleAdmin == null) {
-            roleAdmin = new Role();
-            roleAdmin.setName("ROLE_ADMIN");
-            roleAdmin = roleRepository.save(roleAdmin);
-        }
-
-        Role roleUser = roleRepository.findByName("ROLE_USER");
-        if (roleUser == null) {
-            roleUser = new Role();
-            roleUser.setName("ROLE_USER");
-            roleUser = roleRepository.save(roleUser);
+        Role role = roleRepository.findByName(userDto.getRole());
+        if (role == null) {
+            role = new Role();
+            role.setName("ROLE_USER");
+            role = roleRepository.save(role);
         }
 
         // Assign roles to the user
-        user.setRoles(Arrays.asList(roleAdmin, roleUser));
+        user.setRoles(List.of(role));
 
         userRepository.save(user);
         return user;
@@ -119,21 +107,9 @@ public class UserServiceImpl implements UserService {
         userDto.setSurname(user.getSurname());
         userDto.setAfm(user.getAfm());
         userDto.setAmka(user.getAmka());
-        userDto.setRole(user.getRoles().toString());
+        userDto.setRole(user.getRoles().get(0).getName());
 
         return userDto;
     }
-    private Role checkRoleAdminExist(){
-        Role role = new Role();
-        role.setName("ROLE_ADMIN");
-
-        return roleRepository.save(role);
-    }
-    private Role checkRoleUserExist(){
-        Role role = new Role();
-        role.setName("ROLE_USER");
-
-        return roleRepository.save(role);
 
 }
-    }

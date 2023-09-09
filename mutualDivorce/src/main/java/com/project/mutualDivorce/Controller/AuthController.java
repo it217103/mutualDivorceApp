@@ -7,6 +7,7 @@ import com.project.mutualDivorce.Entity.User;
 import com.project.mutualDivorce.Service.DivorceService;
 import com.project.mutualDivorce.Service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,11 +27,11 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @GetMapping("/registeredUsers")
-    public String registeredUsers(){
-        return "registeredUsers";
-
-    }
+//    @GetMapping("/registeredUsers")
+//    public String registeredUsers(){
+//        return "registeredUsers";
+//
+//    }
 
 
     // handler method to handle home page request
@@ -39,7 +40,8 @@ public class AuthController {
         return "index";
     }
     @GetMapping("/home")
-    public String home() {
+    public String home(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute("user", user);
         return "home";
     }
     @GetMapping("/admin")
@@ -87,7 +89,6 @@ public class AuthController {
         return "redirect:/register?success";
     }
     // handler method to handle list of users
-    /*
     @GetMapping("/registeredUsers")
     public String registeredUsers(Model model){
         List<UserDto> users = userService.findAllUsers();
@@ -95,7 +96,6 @@ public class AuthController {
         return "registeredUsers";
     }
 
-     */
     /*
     @GetMapping("/submit-divorce-form")
     public String formSubmit(){
