@@ -19,6 +19,10 @@ public class DivorceService {
         this.divorceRepository = divorceRepository;
     }
 
+    public Divorce editForm(long id, Divorce updatedForm) {
+        return null;
+    }
+
     public List<Divorce> findAll(){
         return divorceRepository.findAll();
     }

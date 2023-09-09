@@ -111,5 +111,17 @@ public class UserServiceImpl implements UserService {
 
         return userDto;
     }
+    private Role checkRoleAdminExist(){
+        Role role = new Role();
+        role.setName("ROLE_ADMIN");
 
+        return roleRepository.save(role);
+    }
+    private Role checkRoleUserExist(){
+        Role role = new Role();
+        role.setName("ROLE_USER");
+
+        return roleRepository.save(role);
+
+    }
 }
