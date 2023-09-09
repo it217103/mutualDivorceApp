@@ -73,6 +73,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteById(long id) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user != null) {
+            user.getRoles().clear();
+            userRepository.save(user);
+        }
         userRepository.deleteById(id);
     }
 
@@ -106,7 +111,12 @@ public class UserServiceImpl implements UserService {
         userDto.setSurname(user.getSurname());
         userDto.setAfm(user.getAfm());
         userDto.setAmka(user.getAmka());
-        userDto.setRole(user.getRoles().get(0).getName());
+
+        if (!user.getRoles().isEmpty()) {
+            userDto.setRole(user.getRoles().get(0).getName());
+        } else {
+            userDto.setRole("No Role"); // Or set to an appropriate default value
+        }
 
         return userDto;
     }

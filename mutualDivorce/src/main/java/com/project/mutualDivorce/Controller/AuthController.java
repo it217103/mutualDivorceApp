@@ -69,7 +69,7 @@ public class AuthController {
                                Model model){
         User existingUser = userService.findUserBySurname(userDto.getSurname());
 
-        if(existingUser!= null && existingUser.getSurname() !=null){
+        if(existingUser!= null && existingUser.getUsername() !=null){
             result.rejectValue("Surname", null,
                     "There is already an account registered with the same username");
 
